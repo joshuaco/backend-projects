@@ -15,6 +15,11 @@ async function fetchData() {
     );
     const data = await response.json();
 
+    if (data.status === '404') {
+      console.log('GitHub user not found');
+      return;
+    }
+
     getEvents(data);
   } catch (error) {
     console.log('Error fetching data:', error);
@@ -23,6 +28,11 @@ async function fetchData() {
 
 function getEvents(data) {
   const eventsObject = {};
+
+  if (data.length === 0) {
+    console.log('No events found');
+    return;
+  }
 
   data.forEach((event) => {
     const { type, repo } = event;
